@@ -1,0 +1,8 @@
+序号,工序名称,负责人邮箱,持续时间(天),前置工序序号,Slack频道
+1,需求确认,lysander@janusd.com,1,,#proj-{项目标识}
+2,UI设计,andrey@janusd.com,3,1,#proj-{项目标识}
+3,前端开发,wissame@janusd.com,5,2,#proj-{项目标识}
+4,后端开发,michaelb@janusd.com,5,2,#proj-{项目标识}
+5,系统集成,lysander@janusd.com,2,"3,4",#proj-{项目标识}
+6,测试验收,andrey@janusd.com,3,5,#proj-{项目标识}
+7,部署上线,lysander@janusd.com,1,6,#proj-{项目标识}
