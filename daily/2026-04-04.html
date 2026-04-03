@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日记 - 2026-04-04</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.8;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .header {
+    text-align: center;
+    padding: 40px 0 30px;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 30px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 300;
+    color: #555;
+  }
+  .header .date {
+    font-size: 14px;
+    color: #999;
+    margin-top: 8px;
+  }
+  .entry {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .entry .time {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .entry .time::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #4CAF50;
+    border-radius: 50%;
+  }
+  .entry .text {
+    font-size: 16px;
+    margin-bottom: 12px;
+    white-space: pre-wrap;
+  }
+  .entry .images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .entry .images img {
+    max-width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .entry .images.single img {
+    max-width: 100%;
+  }
+  .entry .images.multi img {
+    max-width: calc(50% - 5px);
+  }
+  .entry.voice .time::before {
+    background: #2196F3;
+  }
+  .entry.image-only .time::before {
+    background: #FF9800;
+  }
+  .footer {
+    text-align: center;
+    padding: 30px 0;
+    color: #ccc;
+    font-size: 12px;
+  }
+  @media (max-width: 480px) {
+    .container { padding: 10px; }
+    .entry { padding: 15px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>2026-04-04 Daily Record</h1>
+    <div class="date">星期六 | 2 entries</div>
+  </div>
+    <div class="entry voice">
+    <div class="time">23:18</div>
+    <div class="text">折腾了一整天，总算把自己的日记系统搭了起来。以后在微信里随手发段语音、拍张照片，就能自动攒下来，晚上整理成一篇像样的日记。想想还挺有成就感的。</div>
+    <div class="images multi">
+      <img src="assets/2026-04-04/002.jpg" loading="lazy" />
+      <img src="assets/2026-04-04/003.jpg" loading="lazy" />
+    </div>
+  </div>
+
+  <div class="entry text">
+    <div class="time">23:18</div>
+    <div class="text">迪拜的午后，阳光毫不吝啬地铺满整条街道。远处的哈利法塔在蓝天白云间静静伫立，Ficus Garden 的指示牌在路边随意地指着方向。几个行人沿着绿荫小道慢悠悠地走着，这座城市总有一种让人放慢脚步的魔力。
+今天的主要工程是搭建个人日记系统。从 Claude Code 升级，到配置微信接入、Groq 语音识别，再到写收集脚本和 HTML 生成器，一路踩了不少坑。最离谱的是在自己的会话里执行重启命令，相当于拔自己的网线，来来回回卡了好几次才想明白。好在最后都理顺了——语音自动转文字，图片自动归档，文字对话里的精华整理时再提取，最终生成一份带点温度的生活随笔。
+还顺手把服务器时区改成了迪拜时间。毕竟人在哪里，时间就该跟着在哪里。晚安，迪拜。</div>
+  </div>
+  <div class="footer">Daily Record by Claude Code</div>
+</div>
+</body>
+</html>
