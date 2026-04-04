@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Vibe Coding 学习路线图</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.8;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .header {
+    text-align: center;
+    padding: 50px 0 40px;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 40px;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 300;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .header .subtitle {
+    font-size: 16px;
+    color: #888;
+  }
+  .phase {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    position: relative;
+    border-left: 4px solid #ccc;
+  }
+  .phase.p1 { border-left-color: #4CAF50; }
+  .phase.p2 { border-left-color: #2196F3; }
+  .phase.p3 { border-left-color: #9C27B0; }
+  .phase.p4 { border-left-color: #FF9800; }
+  .phase.p5 { border-left-color: #E91E63; }
+  .phase.pitfall { border-left-color: #F44336; }
+  .phase .tag {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .p1 .tag { background: #4CAF50; }
+  .p2 .tag { background: #2196F3; }
+  .p3 .tag { background: #9C27B0; }
+  .p4 .tag { background: #FF9800; }
+  .p5 .tag { background: #E91E63; }
+  .pitfall .tag { background: #F44336; }
+  .phase h2 {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  .phase .duration {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 16px;
+  }
+  .phase h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #555;
+    margin: 20px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .phase ul {
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+  .phase li {
+    margin-bottom: 6px;
+    font-size: 15px;
+    color: #444;
+  }
+  .phase .tip {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: #666;
+    border-left: 3px solid #ddd;
+  }
+  .phase .tip.green { border-left-color: #4CAF50; background: #f1f8e9; }
+  .phase .tip.blue { border-left-color: #2196F3; background: #e3f2fd; }
+  .phase .tip.orange { border-left-color: #FF9800; background: #fff3e0; }
+  .phase .tip.red { border-left-color: #F44336; background: #fce4ec; }
+  .resources {
+    margin-top: 12px;
+  }
+  .resources a {
+    display: block;
+    color: #2196F3;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 4px 0;
+  }
+  .resources a:hover { text-decoration: underline; }
+  .resources a::before {
+    content: "📎 ";
+  }
+  .footer {
+    text-align: center;
+    padding: 40px 0;
+    color: #ccc;
+    font-size: 12px;
+  }
+  @media (max-width: 480px) {
+    .container { padding: 12px; }
+    .phase { padding: 20px; }
+    .header h1 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>Claude Code Vibe Coding</h1>
+    <div class="subtitle">从入门到自动化的完整学习路线图 · 2026-04-04</div>
+  </div>
+
+  <!-- 阶段一 -->
+  <div class="phase p1">
+    <span class="tag">阶段一</span>
+    <h2>入门基础</h2>
+    <div class="duration">预计 1-2 天</div>
+    <p>核心理念：用自然语言描述意图，让 AI 写代码。</p>
+
+    <h3>学习内容</h3>
+    <ul>
+      <li>Claude Code 安装与基本操作</li>
+      <li>学会写好的 prompt：描述"要什么"而不是"怎么做"</li>
+      <li>理解工作模式：对话模式、Plan Mode、Explore Agent</li>
+    </ul>
+
+    <h3>关键技巧</h3>
+    <div class="tip green">
+      先描述全局再进入细节，不要一上来就说具体实现。<br>
+      一次只做一件事，不要在一个 prompt 里塞太多需求。<br>
+      遇到问题先让 Claude 分析原因，而不是直接要答案。
+    </div>
+
+    <h3>推荐资料</h3>
+    <div class="resources">
+      <a href="https://code.claude.com/docs/en/overview" target="_blank">Anthropic 官方文档</a>
+      <a href="https://natesnewsletter.substack.com/p/the-claude-code-complete-guide-learn" target="_blank">Claude Code 完整指南：Vibe Coding 与 Agentic AI</a>
+      <a href="https://medium.com/design-bootcamp/vibe-coding-with-claude-code-as-a-complete-novice-63a5b046c307" target="_blank">新手实战：从零开始 Vibe Coding</a>
+      <a href="https://cgstrategylab.com/detailed-claude-code-vibe-coding-guide/" target="_blank">详细 Claude Code Vibe Coding 指南</a>
+    </div>
+  </div>
+
+  <!-- 阶段二 -->
+  <div class="phase p2">
+    <span class="tag">阶段二</span>
+    <h2>项目级协作</h2>
+    <div class="duration">预计 3-5 天</div>
+    <p>核心理念：用 CLAUDE.md 定义项目规范，让 AI 持续输出一致风格的代码。</p>
+
+    <h3>学习内容</h3>
+    <ul>
+      <li>CLAUDE.md 编写：定义技术栈、代码风格、架构决策、常用命令</li>
+      <li>版本控制纪律：每个功能一个分支，AI 生成的代码必须 review</li>
+      <li>Specification Engineering：写清楚需求规格比写 prompt 更重要</li>
+      <li>测试驱动：让 Claude Code 生成代码的同时生成测试</li>
+    </ul>
+
+    <h3>关键技巧</h3>
+    <div class="tip blue">
+      CLAUDE.md 就是你的"项目宪法"，写得越清楚 AI 输出越靠谱。<br>
+      用 Plan Mode 先设计方案再写代码，避免返工。<br>
+      每次改动后跑测试，AI 生成的代码约有 45% 存在潜在问题。
+    </div>
+
+    <h3>推荐资料</h3>
+    <div class="resources">
+      <a href="https://github.com/shanraisshan/claude-code-best-practice" target="_blank">Claude Code 最佳实践合集（GitHub）</a>
+      <a href="https://www.softr.io/blog/vibe-coding-best-practices" target="_blank">8 条核心最佳实践</a>
+      <a href="https://dev.to/wasp/a-structured-workflow-for-vibe-coding-full-stack-apps-352l" target="_blank">结构化全栈开发工作流</a>
+      <a href="https://www.sitepoint.com/vibe-coding-2026-complete-guide/" target="_blank">Vibe Coding 2026 完整指南</a>
+    </div>
+  </div>
+
+  <!-- 阶段三 -->
+  <div class="phase p3">
+    <span class="tag">阶段三</span>
+    <h2>MCP 与工具集成</h2>
+    <div class="duration">预计 1 周</div>
+    <p>核心理念：通过 MCP 让 Claude Code 连接外部服务，变成工作流中枢。</p>
+
+    <h3>学习内容</h3>
+    <ul>
+      <li>MCP 协议原理：AI 与外部工具的标准连接方式</li>
+      <li>常用 MCP Server：Notion、Slack、Google Calendar、Asana</li>
+      <li>自定义 MCP Server：为自己的服务写 MCP 接口</li>
+      <li>Hooks 系统：17 个生命周期事件，自动化格式化、lint、部署</li>
+    </ul>
+
+    <h3>关键技巧</h3>
+    <div class="tip">
+      MCP 工具名称格式：<code>mcp__&lt;server&gt;__&lt;tool&gt;</code><br>
+      PreToolUse hooks 可以拦截危险操作（比如 rm -rf）<br>
+      PostToolUse hooks 可以自动格式化、自动运行测试
+    </div>
+
+    <h3>推荐资料</h3>
+    <div class="resources">
+      <a href="https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/" target="_blank">MCP + Hooks + Skills 实战配置</a>
+      <a href="https://claudefa.st/blog/tools/mcp-extensions/best-addons" target="_blank">50+ MCP Server 合集</a>
+      <a href="https://aiorg.dev/blog/claude-code-hooks" target="_blank">Hooks 完整指南 + 20 个实例</a>
+      <a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank">Awesome Claude Code 资源库（GitHub）</a>
+      <a href="https://serenitiesai.com/articles/claude-code-hooks-guide-2026" target="_blank">Claude Code Hooks 指南 2026</a>
+    </div>
+  </div>
+
+  <!-- 阶段四 -->
+  <div class="phase p4">
+    <span class="tag">阶段四</span>
+    <h2>自动化与持续运行</h2>
+    <div class="duration">预计 1-2 周</div>
+    <p>核心理念：Claude Code 不只是你敲命令时才工作，而是 7×24 持续运行的助手。</p>
+
+    <h3>学习内容</h3>
+    <ul>
+      <li>cc-connect 多平台接入（微信、飞书、Slack）</li>
+      <li>定时任务自动化（日记系统、提醒、报告）</li>
+      <li>n8n + Claude Code 联动：事件驱动的工作流</li>
+      <li>多 Agent 协作：不同 Agent 负责不同领域</li>
+    </ul>
+
+    <h3>你已经在实践的</h3>
+    <div class="tip orange">
+      微信 → Claude Code → 日记系统 → Git → Obsidian<br>
+      Google Calendar 集成<br>
+      Asana + Slack 项目自动化<br>
+      Groq Whisper 语音识别 → 日记
+    </div>
+
+    <h3>推荐资料</h3>
+    <div class="resources">
+      <a href="https://cgstrategylab.com/advanced-claude-code-vibe-coding-guide/" target="_blank">高级 Vibe Coding 技巧：Task Lists、Plan Mode、Background</a>
+      <a href="https://www.godofprompt.ai/blog/vibe-coding-with-claude-code" target="_blank">用 Vibe Coding 替代 SaaS：自建工具指南</a>
+      <a href="https://claude-world.com/articles/claude-code-complete-guide-2026/" target="_blank">Claude Code 2026 从零到精通</a>
+    </div>
+  </div>
+
+  <!-- 阶段五 -->
+  <div class="phase p5">
+    <span class="tag">阶段五</span>
+    <h2>分享与输出</h2>
+    <div class="duration">持续进行</div>
+    <p>核心理念：把你的 AI 协作经验沉淀为可分享的知识。</p>
+
+    <h3>方向</h3>
+    <ul>
+      <li>个人博客 / 知识站点：发布日记和 AI 使用心得</li>
+      <li>社交媒体：小红书、公众号、Twitter 分享碎片化经验</li>
+      <li>开源贡献：CLAUDE.md 模板、MCP Server、Hooks 配置</li>
+      <li>从 Obsidian 知识库自动同步发布</li>
+    </ul>
+
+    <h3>推荐资料</h3>
+    <div class="resources">
+      <a href="https://spunk.codes/blog/vibe-coding-guide-2026" target="_blank">完整 Vibe Coding 指南 + 50 个 Prompt 模板</a>
+      <a href="https://www.nxcode.io/resources/news/what-is-vibe-coding-complete-guide-ai-development-2026" target="_blank">Vibe Coding 完全指南 2026</a>
+      <a href="https://stormy.ai/blog/growth-marketers-guide-vibe-coding-claude-code-2026" target="_blank">增长营销者的 Vibe Coding 指南</a>
+    </div>
+  </div>
+
+  <!-- 常见陷阱 -->
+  <div class="phase pitfall">
+    <span class="tag">避坑指南</span>
+    <h2>常见陷阱与解决方案</h2>
+
+    <div class="tip red">
+      <strong>1. Prompt 太模糊</strong><br>
+      "帮我做个网站" → "用 Next.js + Tailwind 做一个展示日记的单页应用，支持按日期筛选"
+    </div>
+
+    <div class="tip red">
+      <strong>2. 没有 CLAUDE.md</strong><br>
+      AI 每次都在猜你的偏好，输出不稳定。写好项目规范文件是第一步。
+    </div>
+
+    <div class="tip red">
+      <strong>3. 一次塞太多</strong><br>
+      一个 prompt 做太多事情，结果哪个都没做好。拆分成小步骤逐个完成。
+    </div>
+
+    <div class="tip red">
+      <strong>4. 不检查输出</strong><br>
+      盲目信任 AI 生成的代码，上线后出 bug。每次改动都要 review 和测试。
+    </div>
+
+    <div class="tip red">
+      <strong>5. 不用版本控制</strong><br>
+      改坏了无法回退。每个功能一个分支，commit 要勤。
+    </div>
+
+    <div class="tip red">
+      <strong>6. 权限和环境没配好</strong><br>
+      工具审批卡住流程、时区错误、依赖缺失。先把环境理顺再干活。
+    </div>
+
+    <div class="tip red">
+      <strong>7. 不理解 AI 的局限</strong><br>
+      AI 不知道你的业务逻辑，需要你提供充分的上下文。
+    </div>
+
+    <div class="tip red">
+      <strong>8. 不记录不复盘</strong><br>
+      每次协作的经验没有沉淀，同样的坑反复踩。用日记和知识库持续积累。
+    </div>
+  </div>
+
+  <div class="footer">
+    Claude Code Vibe Coding Roadmap · Generated by Claude Code · 2026-04-04
+  </div>
+
+</div>
+</body>
+</html>
