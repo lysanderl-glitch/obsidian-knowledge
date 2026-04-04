@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日记 - 2026-04-04</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.8;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .header {
+    text-align: center;
+    padding: 40px 0 30px;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 30px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 300;
+    color: #555;
+  }
+  .header .date {
+    font-size: 14px;
+    color: #999;
+    margin-top: 8px;
+  }
+  .entry {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .entry .time {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .entry .time::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #4CAF50;
+    border-radius: 50%;
+  }
+  .entry .text {
+    font-size: 16px;
+    margin-bottom: 12px;
+    white-space: pre-wrap;
+  }
+  .entry .images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .entry .images img {
+    max-width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .entry .images.single img {
+    max-width: 100%;
+  }
+  .entry .images.multi img {
+    max-width: calc(50% - 5px);
+  }
+  .entry.voice .time::before {
+    background: #2196F3;
+  }
+  .entry.image-only .time::before {
+    background: #FF9800;
+  }
+  .footer {
+    text-align: center;
+    padding: 30px 0;
+    color: #ccc;
+    font-size: 12px;
+  }
+  @media (max-width: 480px) {
+    .container { padding: 10px; }
+    .entry { padding: 15px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>2026-04-04 Daily Record</h1>
+    <div class="date">星期六 | 2 entries</div>
+  </div>
+    <div class="entry voice">
+    <div class="time">14:34</div>
+    <div class="text">今天和团队出来玩了，先去温超买了些吃的，然后去希尔顿酒店打牌</div>
+  </div>
+
+  <div class="entry text">
+    <div class="time">23:30</div>
+    <div class="text">上午处理了一些技术事务。昨晚搭建的日记系统今天正式投入使用，把服务器时区调成了迪拜时间，定时任务也重新校准。GitHub Token 因为仓库公开后被安全扫描自动吊销，重新生成了一个。还整理了一份 Claude Code Vibe Coding 的学习路线图，存进了知识库。
+下午和团队出去玩，先去温超采购了一波零食，然后一起到希尔顿酒店打牌。难得的放松时光。
+折腾了半天微信图片接收的问题，服务器在新加坡，微信图片 CDN 在国内，下载老是超时。试了压缩图、切换网络都不行。考虑过切 Telegram，先搁置了。搭了一个图片上传页面备用，等 DNS 配好就能用。
+关于内容分享体系，初步想法是自建站加公众号双发，Obsidian 知识库做内容源头。明天继续想想细节。充实的一天，晚安。</div>
+  </div>
+  <div class="footer">Daily Record by Claude Code</div>
+</div>
+</body>
+</html>
