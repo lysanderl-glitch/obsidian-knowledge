@@ -5,7 +5,7 @@
 ## 今日会话概要
 
 ## 会话统计
-- 会话数量：36
+- 会话数量：120
 
 ## 主要话题
 
@@ -17,12 +17,12 @@
 - 安装版本：cc-connect@beta
 - Token 有效期：已绑定
 
+### Notion MCP Server
+- 状态：已配置并连接成功
+- API Key：已配置
+- 工作区数据库：7个
+
 ## 问题与解决
 
 ## 知识库同步
 
-- 状态：已同步到 GitHub
-- 仓库：https://github.com/lysanderl-glitch/obsidian-knowledge
-
----
-*此文件由定时任务自动生成*
