@@ -3,3 +3,5 @@
 	AppID：wx964591c526715c17
 	AppSecret：ffe2356088c18cac9e62341ba1b467fc
 
+Github apikey
+	crsr_bfddbd688bfcb82449001e475fb37feee333b33547cd99a552b2b85310f84d86

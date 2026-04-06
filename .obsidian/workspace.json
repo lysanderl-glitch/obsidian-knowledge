@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "0-🗃️-资源/04-Obsidian-Git同步配置.md",
+                "file": "workRecord/2026-04-06 Work Record.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "04-Obsidian-Git同步配置"
+              "title": "2026-04-06 Work Record"
             }
           }
         ]
@@ -184,8 +184,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "04f84f05795b175f",
+  "active": "44a9e1af49bcbfbb",
   "lastOpenFiles": [
+    "workRecord/2026-04-05 Work Record.md",
+    "0-🗃️-资源/04-Obsidian-Git同步配置.md",
     "daily/upload.html",
     "daily/index.html",
     "daily/assets/2026-04-05/003.jpg",
@@ -208,16 +210,13 @@
     "workRecord/2026-04-06 Work Record.md",
     "0-🗃️-资源/1-🛠️-工具配置/3-💡-经验总结/05-网站搭建与微信公众号发布流程.md",
     "0-🗃️-资源/1-🛠️-工具配置/3-💡-经验总结",
-    "workRecord/2026-04-05 Work Record.md",
     "workRecord",
     "1-🛠️-工具配置/2026-04-04-Claude-Code会话记录.md",
     "daily/assets/2026-04-03/003.jpg",
     "daily/assets/2026-04-03/002.jpg",
     "README.md",
     "sync.log",
-    "process-tables/process-template.csv",
     "0-🗃️-资源/1-🛠️-工具配置/2-📚-学习笔记/3-💡-经验总结/03-项目管理自动化方案.md",
-    "0-🗃️-资源/04-Obsidian-Git同步配置.md",
     "0-🗃️-资源/1-🛠️-工具配置/2-📚-学习笔记/3-💡-经验总结/02-Obsidian-LiveSync同步配置.md",
     "0-🗃️-资源/1-🛠️-工具配置/2-📚-学习笔记/3-💡-经验总结/01-n8n工作流开发经验.md"
   ]
