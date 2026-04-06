@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日记图片上传</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container {
+    max-width: 400px;
+    width: 90%;
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+  h1 { font-size: 20px; font-weight: 400; color: #555; margin-bottom: 8px; }
+  .date { font-size: 14px; color: #aaa; margin-bottom: 24px; }
+  .upload-area {
+    border: 2px dashed #ddd;
+    border-radius: 12px;
+    padding: 40px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+  }
+  .upload-area:hover, .upload-area.dragover { border-color: #4CAF50; background: #f8fff8; }
+  .upload-area p { color: #999; font-size: 15px; }
+  .upload-area .icon { font-size: 36px; margin-bottom: 10px; }
+  input[type=file] { display: none; }
+  .preview { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .preview img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+  .btn {
+    width: 100%;
+    padding: 14px;
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: #43A047; }
+  .btn:disabled { background: #ccc; cursor: not-allowed; }
+  .status { margin-top: 12px; font-size: 14px; color: #888; }
+  .status.success { color: #4CAF50; }
+  .status.error { color: #F44336; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Daily Record</h1>
+  <div class="date" id="dateDisplay"></div>
+  <div class="upload-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
+    <div class="icon">+</div>
+    <p>tap to select or drag images</p>
+  </div>
+  <input type="file" id="fileInput" accept="image/*" multiple>
+  <div class="preview" id="preview"></div>
+  <button class="btn" id="uploadBtn" onclick="upload()" disabled>Upload</button>
+  <div class="status" id="status"></div>
+</div>
+<script>
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('dateDisplay').textContent = today;
+
+  const fileInput = document.getElementById('fileInput');
+  const preview = document.getElementById('preview');
+  const uploadBtn = document.getElementById('uploadBtn');
+  const status = document.getElementById('status');
+  let files = [];
+
+  fileInput.addEventListener('change', (e) => {
+    files = Array.from(e.target.files);
+    showPreview();
+  });
+
+  const dropZone = document.getElementById('dropZone');
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    showPreview();
+  });
+
+  function showPreview() {
+    preview.innerHTML = '';
+    files.forEach(f => {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(f);
+      preview.appendChild(img);
+    });
+    uploadBtn.disabled = files.length === 0;
+  }
+
+  async function upload() {
+    uploadBtn.disabled = true;
+    status.textContent = 'uploading...';
+    status.className = 'status';
+    const formData = new FormData();
+    files.forEach(f => formData.append('images', f));
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.ok) {
+        status.textContent = data.count + ' images uploaded';
+        status.className = 'status success';
+        files = [];
+        preview.innerHTML = '';
+      } else {
+        status.textContent = 'error: ' + data.error;
+        status.className = 'status error';
+      }
+    } catch (e) {
+      status.textContent = 'upload failed: ' + e.message;
+      status.className = 'status error';
+    }
+    uploadBtn.disabled = false;
+  }
+</script>
+</body>
+</html>
