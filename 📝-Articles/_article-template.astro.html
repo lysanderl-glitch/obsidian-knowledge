@@ -1,0 +1,100 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<!-- METADATA:{"title":"","date":"","tags":[],"description":""} -->
+
+<Layout title="{{TITLE}} - Lysander" description="{{DESC}}">
+  <article class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <time class="text-white/40 text-sm">{{DATE}}</time>
+        <div class="flex gap-2">
+          {{TAG_HTML}}
+        </div>
+      </div>
+      <h1 class="text-4xl font-bold text-white">{{TITLE}}</h1>
+    </header>
+
+    <div class="prose prose-invert max-w-none space-y-8 text-white/80 leading-relaxed">
+
+      <!-- 引言/开篇 -->
+      <p class="text-xl text-white/60">
+        文章开篇介绍...
+      </p>
+
+      <!-- 示例：引用块 -->
+      <blockquote class="border-l-4 border-sky-500 pl-6 italic text-white/60">
+        重要引用或核心观点
+        <footer class="mt-2 text-sm not-italic text-white/40">— 来源</footer>
+      </blockquote>
+
+      <!-- 示例：网格布局 -->
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white/5 p-4 rounded-lg">
+          <h3 class="font-semibold text-sky-400 mb-2">概念A</h3>
+          <p class="text-sm text-white/60">描述...</p>
+        </div>
+        <div class="bg-white/5 p-4 rounded-lg">
+          <h3 class="font-semibold text-green-400 mb-2">概念B</h3>
+          <p class="text-sm text-white/60">描述...</p>
+        </div>
+      </div>
+
+      <!-- 示例：列表 -->
+      <ul class="list-disc list-inside space-y-2">
+        <li><strong>要点一</strong>：说明...</li>
+        <li><strong>要点二</strong>：说明...</li>
+        <li><strong>要点三</strong>：说明...</li>
+      </ul>
+
+      <!-- 示例：表格 -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left py-2 text-white/60">列1</th>
+              <th class="text-left py-2 text-white/60">列2</th>
+              <th class="text-left py-2 text-white/60">列3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">数据1</td>
+              <td class="py-2">内容</td>
+              <td class="py-2">内容</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-green-400">数据2</td>
+              <td class="py-2">内容</td>
+              <td class="py-2">内容</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 示例：代码块 -->
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">代码示例...</code></pre>
+
+      <!-- 示例：卡片 -->
+      <div class="bg-white/5 p-4 rounded-lg">
+        <p class="text-sm text-white/60">
+          <strong class="text-sky-400">提示：</strong>说明内容...
+        </p>
+      </div>
+
+      <!-- 示例：渐变背景总结 -->
+      <div class="bg-gradient-to-r from-sky-500/20 to-purple-500/20 p-6 rounded-lg">
+        <ul class="space-y-2 text-white/80">
+          <li>核心要点一</li>
+          <li>核心要点二</li>
+          <li>核心要点三</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <footer class="mt-16 pt-8 border-t border-white/10">
+      <a href="/blog" class="text-sky-400 hover:text-sky-300">&larr; 返回博客</a>
+    </footer>
+  </article>
+</Layout>

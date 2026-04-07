@@ -4,6 +4,40 @@
 
 ---
 
+## 实施状态
+
+**当前阶段：Phase 1.5 ✅ 核心能力已就绪**
+
+| 组件 | 状态 | 说明 |
+|------|------|------|
+| Webhook | ✅ 运行中 | `https://n8n.lysander.bond/webhook/harness-analyze` |
+| Python 分析服务器 | ✅ 运行中 | `harness-analyze-server.py` on port 5810 (systemd 管理) |
+| n8n Workflow | ✅ 已激活 | `Qr4a3oJper1dLxuZ` |
+| Slack 通知 | ✅ 已验证 | 消息成功推送到 #所有-lysander |
+| **自动执行框架** | ✅ 已就绪 | `/analyze` 返回 `auto_action`，`/execute` 端点可执行动作 |
+| **AI 输出增强** | ✅ 完成 | 同时输出人类可读建议 + 机器可执行动作 JSON |
+
+**Phase 2 执行流程（待 Harness API 接入）：**
+```
+高置信度(≥0.9) + can_auto_execute=true → 自动执行 cleanup/notify 等动作
+低置信度 + requires_human_action=true → Slack 通知人工
+```
+
+**测试命令：**
+```bash
+# 分析 + 获取自动执行建议
+curl -X POST http://127.0.0.1:5810/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"error_message": "npm ERR! code EINTEGRITY", "context": "CI", "source": "test"}'
+
+# 执行动作
+curl -X POST http://127.0.0.1:5810/execute \
+  -H "Content-Type: application/json" \
+  -d '{"action_type": "cleanup", "action_params": {"target": "npm_cache"}}'
+```
+
+---
+
 ## 一、核心架构
 
 ```
@@ -12,12 +46,12 @@ Harness Error (Webhook)
    n8n Workflow Engine
        ↓
 ┌─────────────────────────────┐
-│  AI Agent Loop (Gemini)     │
+│  Python 分析服务器           │
+│  (harness-analyze-server)   │
 │                             │
-│  Think  → 分析错误上下文     │
-│  Act    → 制定修复方案       │
-│  Observe → 执行并观察结果   │
-│  Correct → 失败则重新规划   │
+│  - 调用 Claude API (MiniMax) │
+│  - 解析 thinking/text 结构   │
+│  - 返回结构化 JSON           │
 └─────────────────────────────┘
        ↓
   置信度判定
@@ -35,6 +69,11 @@ Harness Error (Webhook)
 │  (上下文累积 + 记忆更新)     │
 └─────────────────────────────┘
 ```
+
+**技术选型说明：**
+- AI Provider: Claude API via MiniMax 代理（`https://api.minimaxi.com/anthropic`）
+- 分析服务器：Python HTTP Server（独立进程，不在 Docker 内）
+- n8n：仅做路由和通知，不直接调用 AI（避免 Docker 环境限制）
 
 ---
 
@@ -249,6 +288,53 @@ Phase 3 成功 → 阈值降至 70% + 扩大执行范围
 
 ---
 
-## 十、创建时间
+## 十、调试记录与Lessons Learned
+
+### 2026-04-07 Phase 1 部署调试
+
+**问题1：分析服务器返回空 analysis**
+
+- **现象**：`curl` 调用超时，n8n workflow 无法获得分析结果
+- **根因**：MiniMax-M2 模型返回 `content` 数组，第一个元素是 `type: "thinking"`，第二个才是 `type: "text"`
+- **解决**：在 API payload 中添加 `"thinking": {"type": "disabled"}`
+- **代码**：
+  ```python
+  api_payload = {
+      "model": "claude-3-5-sonnet-20241022",
+      "max_tokens": 500,
+      "thinking": {"type": "disabled"},  # 关键修复
+      "messages": [{"role": "user", "content": prompt}]
+  }
+  ```
+
+**问题2：端口占用（OSError: [Errno 98] Address already in use）**
+
+- **解决**：使用 `socketserver.TCPServer.allow_reuse_address = True` 或换端口
+- **最终方案**：端口从 5800 改为 5810
+
+**问题3：JSON 响应被截断**
+
+- **现象**：`confidence` 和 `category_confirmed` 返回 `null`
+- **根因**：`max_tokens=300` 不足以返回完整 JSON
+- **解决**：增加到 `max_tokens=500`
+
+**问题4：n8n Docker 环境限制**
+
+- **现象**：Code 节点无法写入宿主机文件系统
+- **解决**：使用 Python 服务器处理文件 IO，n8n 仅做路由
+
+### 技术要点总结
+
+| 要点 | 值 |
+|------|-----|
+| n8n 容器 → 宿主机 | 使用 `172.18.0.1` 而非 `127.0.0.1` |
+| MiniMax API 响应格式 | content 数组需遍历找 `type: "text"` |
+| AI thinking 模式 | 需显式禁用才能获取纯净文本响应 |
+
+---
+
+## 十一、创建时间
 
 2026-04-07
+
+**最后更新：2026-04-07（Phase 1 部署调试完成）**
