@@ -1,0 +1,109 @@
+{
+  "name": "wechat-blog-draft",
+  "id": "LGkeWFUdYx5X7vgP",
+  "description": "发布博客到微信公众号草稿箱，支持 Webhook 动态 URL，每日定时获取当天文章",
+  "triggers": [
+    {
+      "type": "webhook",
+      "name": "Webhook Trigger",
+      "path": "wechat-blog-draft",
+      "method": "POST"
+    },
+    {
+      "type": "schedule",
+      "name": "Daily Trigger",
+      "cron": "45 18 * * *",
+      "note": "18:45 UTC = 22:45 Dubai (UTC+4)"
+    },
+    {
+      "type": "manual",
+      "name": "Manual Trigger"
+    }
+  ],
+  "nodes": [
+    {
+      "name": "Fetch Article",
+      "type": "n8n-nodes-base.httpRequest",
+      "version": "4.4",
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.article_url || 'https://lysander.bond/blog/claudecode' }}",
+        "responseFormat": "text"
+      }
+    },
+    {
+      "name": "Get WeChat Access Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "version": "4.4",
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx964591c526715c17&secret=${WX_SECRET}"
+      }
+    },
+    {
+      "name": "Fetch Blog Index",
+      "type": "n8n-nodes-base.httpRequest",
+      "version": "4.4",
+      "parameters": {
+        "method": "GET",
+        "url": "https://lysander.bond/blog/"
+      },
+      "executeOnce": true
+    },
+    {
+      "name": "Extract Today Articles",
+      "type": "n8n-nodes-base.code",
+      "version": "2",
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const html = $input.first().json.data || '';\nconst today = new Date().toISOString().split('T')[0];\nconst articleRegex = /<a href=\"\\/blog\\/([^\"]+)\"[^>]*>.*?<time[^>]*>([^<]+)<\\/time>/gs;\nconst articles = [];\nlet match;\nwhile ((match = articleRegex.exec(html)) !== null) {\n  const slug = match[1];\n  const date = match[2].trim();\n  if (date === today || slug === 'index') continue;\n  articles.push({ article_url: 'https://lysander.bond/blog/' + slug, title: slug });\n}\nif (articles.length === 0) {\n  const latestRegex = /<a href=\"\\/blog\\/([^\"]+)\"[^>]*>.*?<time[^>]*>([^<]+)<\\/time>/gs;\n  const allArticles = [];\n  while ((match = latestRegex.exec(html)) !== null) {\n    if (match[1] !== 'index') {\n      allArticles.push({ article_url: 'https://lysander.bond/blog/' + match[1], date: match[2].trim() });\n    }\n  }\n  if (allArticles.length > 0) { articles.push(allArticles[0]); }\n}\nreturn articles.map(a => ({ json: a }));"
+      }
+    },
+    {
+      "name": "Loop Over Articles",
+      "type": "n8n-nodes-base.splitInBatches",
+      "version": "3",
+      "parameters": { "batchSize": 1 }
+    },
+    {
+      "name": "Convert HTML & Build Request",
+      "type": "n8n-nodes-base.code",
+      "version": "2",
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const h = $(\"Fetch Article\").first().json.data || \"\";\nconst accessToken = $(\"Get WeChat Access Token\").first().json.access_token;\nconst articleUrl = $(\"Fetch Article\").first().json.article_url || \"\";\nconst thumbMediaId = \"${WX_THUMB_MEDIA_ID}\";\nconst titleMatch = h.match(/<h1[^>]*>([\\\\s\\\\S]*?)<\\\\/h1>/i);\nlet title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, \"\").trim() : \"Untitled\";\nconst proseStart = h.indexOf('class=\"prose');\nconst contentStart = h.indexOf(\">\", proseStart) + 1;\nconst footerStart = h.indexOf(\"<footer\", proseStart);\nlet content = h.substring(contentStart, footerStart > 0 ? footerStart : content.length);\nlet cleanContent = content.replace(/<nav[\\\\s\\\\S]*?<\\\\/nav>/gi, \"\").replace(/<script[\\\\s\\\\S]*?<\\\\/script>/gi, \"\").replace(/<style[\\\\s\\\\S]*?<\\\\/style>/gi, \"\").replace(/<aside[\\\\s\\\\S]*?<\\\\/aside>/gi, \"\").replace(/\\\\s*class=\"[^\"]*\"/gi, \"\").replace(/\\\\s*style=\"[^\"]*\"/gi, \"\");\ncleanContent = cleanContent.replace(/<code>/gi, '<code style=\"background:#f4f4f4;padding:2px 6px;\">').replace(/<pre>/gi, '<pre style=\"background:#f6f8fa;padding:16px;\">').replace(/<h2[^>]*>/gi, '<p style=\"font-size:20px;font-weight:bold;margin:20px 0 10px;\">').replace(/<\\\\/h2>/gi, '</p>').replace(/<h3[^>]*>/gi, '<p style=\"font-size:17px;font-weight:bold;margin:18px 0 9px;\">').replace(/<\\\\/h3>/gi, '</p>').replace(/<p([^>]*)>/gi, '<p style=\"margin:12px 0;line-height:1.8;\">').replace(/<ul[^>]*>/gi, '<ul style=\"padding-left:24px;margin:12px 0;\">').replace(/<ol[^>]*>/gi, '<ol style=\"padding-left:24px;margin:12px 0;\">').replace(/<li([^>]*)>/gi, '<li style=\"margin:6px 0;\">').replace(/<blockquote[^>]*>/gi, '<blockquote style=\"border-left:4px solid #4CAF50;margin:16px 0;padding:8px 16px;color:#555;background:#f9f9f9;\">').replace(/<img([^>]*)>/gi, '<img$1 style=\"max-width:100%;border-radius:8px;margin:12px 0;\" />').replace(/<div/gi, '<p style=\"margin:10px 0;\"').replace(/<\\\\/div>/gi, '</p>').replace(/<strong>/gi, '<strong style=\"font-weight:bold;\">').replace(/<em>/gi, '<em style=\"font-style:italic;\">').replace(/<a([^>]*)>/gi, '<a$1 style=\"color:#1a73e8;text-decoration:underline;\">');\nconst textOnly = cleanContent.replace(/<[^>]+>/g, \"\").replace(/\\\\s+/g, \" \").trim();\nconst digest = textOnly.substring(0, 54).replace(/[\"']/g, \"\") + \"...\";\nconst payload = { articles: [{ title: title, author: \"Lysander\", digest: digest, content: cleanContent, content_source_url: articleUrl, thumb_media_id: thumbMediaId, need_open_comment: 0, only_fans_can_comment: 0 }] };\nreturn [{ json: { body: JSON.stringify(payload), access_token: accessToken } }];"
+      }
+    },
+    {
+      "name": "Create WeChat Draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "version": "4.4",
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.weixin.qq.com/cgi-bin/draft/add",
+        "sendQuery": true,
+        "queryParameters": [{ "name": "access_token", "value": "={{ $json.access_token }}" }],
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $json.body }}"
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": { "main": [["Fetch Article"]] },
+    "Manual Trigger": { "main": [["Fetch Article"]] },
+    "Daily Trigger": { "main": [["Fetch Blog Index"]] },
+    "Fetch Blog Index": { "main": [["Extract Today Articles"]] },
+    "Extract Today Articles": { "main": [["Loop Over Articles"]] },
+    "Loop Over Articles": { "main": [["Convert HTML & Build Request"]] },
+    "Convert HTML & Build Request": { "main": [["Create WeChat Draft"]] },
+    "Fetch Article": { "main": [["Get WeChat Access Token"]] },
+    "Get WeChat Access Token": { "main": [["Convert HTML & Build Request"]] }
+  },
+  "environmentVariables": {
+    "WX_APPID": "wx964591c526715c17",
+    "WX_SECRET": "你的微信应用密钥",
+    "WX_THUMB_MEDIA_ID": "你的永久图片 media_id"
+  }
+}
