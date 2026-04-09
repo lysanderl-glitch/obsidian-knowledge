@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何用AI打造"第二大脑" - Claude Code实战分享</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 100px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* 导航 */
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav button:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            font-size: 16px;
+            color: rgba(255,255,255,0.5);
+            z-index: 100;
+        }
+
+        /* 标题页 */
+        .slide-title {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        .slide-title h1 {
+            font-size: 4em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-title .subtitle {
+            font-size: 1.5em;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 60px;
+        }
+
+        .slide-title .meta {
+            font-size: 1.1em;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* 内容页通用 */
+        .slide-content {
+            background: linear-gradient(180deg, #0d1117 0%, #161b22 100%);
+        }
+
+        .slide-content h2 {
+            font-size: 2.8em;
+            color: #00d9ff;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .slide-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            border-radius: 2px;
+        }
+
+        /* 问题页 */
+        .problem-box {
+            background: rgba(255, 100, 100, 0.1);
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            border-radius: 20px;
+            padding: 40px 50px;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .problem-box .emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .problem-box h3 {
+            font-size: 2em;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        .problem-box p {
+            font-size: 1.3em;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.8;
+        }
+
+        /* 解决方案页 */
+        .solution-flow {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .flow-item {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            flex: 1;
+            transition: all 0.3s;
+        }
+
+        .flow-item:hover {
+            transform: translateY(-5px);
+            border-color: #00d9ff;
+            box-shadow: 0 10px 40px rgba(0, 217, 255, 0.2);
+        }
+
+        .flow-item .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .flow-item h4 {
+            font-size: 1.4em;
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+
+        .flow-item p {
+            font-size: 1em;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            font-size: 2em;
+            color: rgba(0, 217, 255, 0.5);
+        }
+
+        /* 软件2.0页 */
+        .comparison-table {
+            width: 100%;
+            max-width: 900px;
+            border-collapse: collapse;
+            margin-top: 40px;
+        }
+
+        .comparison-table th {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+            padding: 20px;
+            font-size: 1.3em;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.1em;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table .old {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .comparison-table .new {
+            color: #00ff88;
+        }
+
+        /* 架构页 */
+        .architecture-box {
+            background: rgba(0, 255, 136, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        .architecture-box h3 {
+            font-size: 2em;
+            color: #00ff88;
+            margin-bottom: 40px;
+        }
+
+        .arch-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .arch-node {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(0, 255, 136, 0.2));
+            border: 1px solid rgba(0, 217, 255, 0.5);
+            border-radius: 12px;
+            padding: 20px 30px;
+            font-size: 1.1em;
+        }
+
+        .arch-arrow {
+            font-size: 2em;
+            color: rgba(0, 255, 136, 0.6);
+        }
+
+        /* 统计页 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 900px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: rgba(0, 217, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 4em;
+            font-weight: 700;
+            color: #00d9ff;
+            display: block;
+        }
+
+        .stat-card .label {
+            font-size: 1.2em;
+            color: rgba(255,255,255,0.7);
+            margin-top: 10px;
+        }
+
+        .stat-card.highlight {
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid rgba(0, 255, 136, 0.4);
+        }
+
+        .stat-card.highlight .number {
+            color: #00ff88;
+        }
+
+        /* 知识分类页 */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            max-width: 1100px;
+            margin-top: 40px;
+        }
+
+        .category-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 25px 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .category-card .emoji {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .category-card h4 {
+            font-size: 1.1em;
+            color: #00d9ff;
+            margin-bottom: 8px;
+        }
+
+        .category-card p {
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* 自动化闭环页 */
+        .loop-diagram {
+            background: rgba(0, 255, 136, 0.05);
+            border: 2px dashed rgba(0, 255, 136, 0.4);
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 900px;
+            margin-top: 30px;
+        }
+
+        .loop-title {
+            font-size: 1.5em;
+            color: #00ff88;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .loop-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .loop-step {
+            background: rgba(0, 217, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .loop-step .num {
+            font-size: 2em;
+            color: #00d9ff;
+            font-weight: bold;
+        }
+
+        .loop-step .text {
+            font-size: 1em;
+            color: rgba(255,255,255,0.8);
+            margin-top: 8px;
+        }
+
+        /* Agent管家页 */
+        .agent-architecture {
+            display: flex;
+            gap: 40px;
+            max-width: 1100px;
+            margin-top: 40px;
+        }
+
+        .butler-box {
+            flex: 0 0 300px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 140, 0, 0.2));
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .butler-box h4 {
+            font-size: 1.5em;
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .butler-box .role {
+            font-size: 3em;
+            margin: 20px 0;
+        }
+
+        .butler-box p {
+            font-size: 0.95em;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+
+        .experts-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .expert-card {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .expert-card .icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .expert-card h5 {
+            font-size: 1em;
+            color: #00d9ff;
+        }
+
+        /* 决策系统页 */
+        .decision-levels {
+            display: flex;
+            gap: 30px;
+            max-width: 1000px;
+            margin-top: 40px;
+        }
+
+        .level-card {
+            flex: 1;
+            border-radius: 16px;
+            padding: 35px;
+            text-align: center;
+        }
+
+        .level-card.l1 {
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid rgba(0, 255, 136, 0.4);
+        }
+
+        .level-card.l2 {
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+        }
+
+        .level-card.l3 {
+            background: rgba(255, 100, 100, 0.15);
+            border: 1px solid rgba(255, 100, 100, 0.4);
+        }
+
+        .level-card .level {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .level-card.l1 .level { color: #00ff88; }
+        .level-card.l2 .level { color: #ffd700; }
+        .level-card.l3 .level { color: #ff6b6b; }
+
+        .level-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .level-card.l1 h4 { color: #00ff88; }
+        .level-card.l2 h4 { color: #ffd700; }
+        .level-card.l3 h4 { color: #ff6b6b; }
+
+        .level-card p {
+            font-size: 1em;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+
+        /* 工具链页 */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 25px;
+            max-width: 1000px;
+            margin-top: 40px;
+        }
+
+        .tool-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .tool-card .logo {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .tool-card h4 {
+            font-size: 1.2em;
+            color: #00d9ff;
+            margin-bottom: 8px;
+        }
+
+        .tool-card p {
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* 效果页 */
+        .effect-list {
+            max-width: 800px;
+            margin-top: 40px;
+        }
+
+        .effect-item {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 4px solid #00ff88;
+            border-radius: 0 12px 12px 0;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+        }
+
+        .effect-item .check {
+            font-size: 2em;
+            color: #00ff88;
+        }
+
+        .effect-item h4 {
+            font-size: 1.4em;
+            color: #00ff88;
+            margin-bottom: 5px;
+        }
+
+        .effect-item p {
+            font-size: 1em;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* 结束页 */
+        .slide-end {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        .slide-end h2 {
+            font-size: 3.5em;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 40px;
+        }
+
+        .slide-end .quote {
+            font-size: 1.8em;
+            color: rgba(255,255,255,0.8);
+            font-style: italic;
+            max-width: 700px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .slide-end .links {
+            margin-top: 60px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .slide-end .link {
+            font-size: 1.1em;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 30px;
+            }
+
+            .slide-title h1 {
+                font-size: 2.5em;
+            }
+
+            .slide-content h2 {
+                font-size: 2em;
+            }
+
+            .solution-flow {
+                flex-direction: column;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .agent-architecture {
+                flex-direction: column;
+            }
+
+            .butler-box {
+                flex: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: 标题页 -->
+        <div class="slide slide-title active" data-slide="1">
+            <h1>如何用AI打造"第二大脑"</h1>
+            <p class="subtitle">Claude Code对话知识提取实战</p>
+            <p class="meta">Lysander | 2026.04</p>
+        </div>
+
+        <!-- Slide 2: 背景问题 -->
+        <div class="slide slide-content" data-slide="2">
+            <h2>我们面临的问题</h2>
+            <div class="problem-box">
+                <div class="emoji">💭</div>
+                <h3>每天对话，知识流失</h3>
+                <p>与Claude Code的对话中，蕴含着大量有价值的知识：<br>
+                决策过程、问题解决方案、学习心得、项目经验<br>
+                然而这些知识往往随着对话结束而流失</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: 解决方案 -->
+        <div class="slide slide-content" data-slide="3">
+            <h2>我们需要什么</h2>
+            <div class="solution-flow">
+                <div class="flow-item">
+                    <div class="icon">💬</div>
+                    <h4>对话数据</h4>
+                    <p>Claude Code<br>全量对话记录</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">
+                    <div class="icon">🧠</div>
+                    <h4>知识提取</h4>
+                    <p>AI自动识别<br>高价值内容</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">
+                    <div class="icon">📚</div>
+                    <h4>自动分类</h4>
+                    <p>决策/概念/问题<br>学习/项目</p>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">
+                    <div class="icon">🔄</div>
+                    <h4>持续学习</h4>
+                    <p>形成闭环<br>不断优化</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Software 2.0 -->
+        <div class="slide slide-content" data-slide="4">
+            <h2>Software 2.0 理念</h2>
+            <table class="comparison-table">
+                <tr>
+                    <th>维度</th>
+                    <th class="old">Software 1.0</th>
+                    <th class="new">Software 2.0</th>
+                </tr>
+                <tr>
+                    <td>标签管理</td>
+                    <td class="old">人工定义</td>
+                    <td class="new">AI从使用模式学习</td>
+                </tr>
+                <tr>
+                    <td>知识关联</td>
+                    <td class="old">手动建立</td>
+                    <td class="new">AI自动发现关联</td>
+                </tr>
+                <tr>
+                    <td>检索方式</td>
+                    <td class="old">关键词匹配</td>
+                    <td class="new">语义理解</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Slide 5: 架构设计 -->
+        <div class="slide slide-content" data-slide="5">
+            <h2>系统架构</h2>
+            <div class="architecture-box">
+                <h3>Claude Code 对话知识提取系统</h3>
+                <div class="arch-diagram">
+                    <div class="arch-node">📥 对话数据</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">🧠 知识提取</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">📂 自动分类</div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-node">💾 Obsidian</div>
+                </div>
+                <p style="color: rgba(255,255,255,0.6); margin-top: 20px;">每天23:00自动执行，数据闭环运转</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: 知识分类 -->
+        <div class="slide slide-content" data-slide="6">
+            <h2>智能知识分类</h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <div class="emoji">✅</div>
+                    <h4>决策</h4>
+                    <p>批准、方案确定<br>"同意、执行"</p>
+                </div>
+                <div class="category-card">
+                    <div class="emoji">💡</div>
+                    <h4>概念</h4>
+                    <p>新知识、新方法<br>"Software 2.0"</p>
+                </div>
+                <div class="category-card">
+                    <div class="emoji">🔧</div>
+                    <h4>问题</h4>
+                    <p>遇到的问题<br>及解决方案</p>
+                </div>
+                <div class="category-card">
+                    <div class="emoji">📖</div>
+                    <h4>学习</h4>
+                    <p>新学到的东西<br>"理解、掌握"</p>
+                </div>
+                <div class="category-card">
+                    <div class="emoji">📁</div>
+                    <h4>项目</h4>
+                    <p>项目相关事项<br>"Butler、 lysander"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 统计数据 -->
+        <div class="slide slide-content" data-slide="7">
+            <h2>实施效果</h2>
+            <div class="stats-grid">
+                <div class="stat-card highlight">
+                    <span class="number">100%</span>
+                    <span class="label">对话覆盖率</span>
+                </div>
+                <div class="stat-card">
+                    <span class="number">526</span>
+                    <span class="label">单日高价值知识 (04-08)</span>
+                </div>
+                <div class="stat-card highlight">
+                    <span class="number">72</span>
+                    <span class="label">单日会话数</span>
+                </div>
+                <div class="stat-card">
+                    <span class="number">1272</span>
+                    <span class="label">单日消息数</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 自动化闭环 -->
+        <div class="slide slide-content" data-slide="8">
+            <h2>每日自动化闭环</h2>
+            <div class="loop-diagram">
+                <div class="loop-title">⏰ 每日23:00自动触发</div>
+                <div class="loop-steps">
+                    <div class="loop-step">
+                        <div class="num">1</div>
+                        <div class="text">扫描全量<br>对话.jsonl</div>
+                    </div>
+                    <div class="loop-step">
+                        <div class="num">2</div>
+                        <div class="text">提取用户<br>意图和知识</div>
+                    </div>
+                    <div class="loop-step">
+                        <div class="num">3</div>
+                        <div class="text">分类存储<br>到OBS</div>
+                    </div>
+                    <div class="loop-step">
+                        <div class="num">4</div>
+                        <div class="text">AI持续学习<br>用户偏好</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Agent管家 -->
+        <div class="slide slide-content" data-slide="9">
+            <h2>Agent 管家系统</h2>
+            <div class="agent-architecture">
+                <div class="butler-box">
+                    <h4>Butler Agent</h4>
+                    <div class="role">🎩</div>
+                    <p>担任调度协调角色<br>任务分配 / 决策判断<br>进度监控</p>
+                </div>
+                <div class="experts-grid">
+                    <div class="expert-card">
+                        <div class="icon">📝</div>
+                        <h5>微信运营专家</h5>
+                    </div>
+                    <div class="expert-card">
+                        <div class="icon">🌐</div>
+                        <h5>博客发布专家</h5>
+                    </div>
+                    <div class="expert-card">
+                        <div class="icon">💬</div>
+                        <h5>Slack通知专家</h5>
+                    </div>
+                    <div class="expert-card">
+                        <div class="icon">📊</div>
+                        <h5>n8n工作流专家</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 决策系统 -->
+        <div class="slide slide-content" data-slide="10">
+            <h2>自动决策机制</h2>
+            <div class="decision-levels">
+                <div class="level-card l1">
+                    <div class="level">L1</div>
+                    <h4>自动执行</h4>
+                    <p>例行操作<br>已验证流程<br><br>管家直接执行</p>
+                </div>
+                <div class="level-card l2">
+                    <div class="level">L2</div>
+                    <h4>管家审批</h4>
+                    <p>需要确认的方案<br>首次执行<br><br>审批后执行</p>
+                </div>
+                <div class="level-card l3">
+                    <div class="level">L3</div>
+                    <h4>上报用户</h4>
+                    <p>复杂/风险操作<br>不可逆操作<br><br>用户决策</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: 工具链 -->
+        <div class="slide slide-content" data-slide="11">
+            <h2>工具链</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="logo">🤖</div>
+                    <h4>Claude Code</h4>
+                    <p>对话主体</p>
+                </div>
+                <div class="tool-card">
+                    <div class="logo">🐍</div>
+                    <h4>Python</h4>
+                    <p>对话解析</p>
+                </div>
+                <div class="tool-card">
+                    <div class="logo">📔</div>
+                    <h4>Obsidian</h4>
+                    <p>知识库存储</p>
+                </div>
+                <div class="tool-card">
+                    <div class="logo">🔄</div>
+                    <h4>n8n</h4>
+                    <p>自动化工作流</p>
+                </div>
+                <div class="tool-card">
+                    <div class="logo">🎩</div>
+                    <h4>Lysander</h4>
+                    <p>AI管理层</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: 效果总结 -->
+        <div class="slide slide-content" data-slide="12">
+            <h2>核心成果</h2>
+            <div class="effect-list">
+                <div class="effect-item">
+                    <div class="check">✓</div>
+                    <div>
+                        <h4>100%对话覆盖</h4>
+                        <p>不再遗漏任何有价值的对话</p>
+                    </div>
+                </div>
+                <div class="effect-item">
+                    <div class="check">✓</div>
+                    <div>
+                        <h4>自动知识沉淀</h4>
+                        <p>从被动记录到主动提取</p>
+                    </div>
+                </div>
+                <div class="effect-item">
+                    <div class="check">✓</div>
+                    <div>
+                        <h4>Software 2.0闭环</h4>
+                        <p>AI从数据中学习，持续优化</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: 结束页 -->
+        <div class="slide slide-end" data-slide="13">
+            <h2>每一次对话<br>都是一次学习</h2>
+            <p class="quote">"每一天都在让<br>第二大脑更加聪明"</p>
+            <div class="links">
+                <span class="link">lysander.bond</span>
+                <span class="link">n8n.lysander.bond</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导航 -->
+    <div class="slide-counter">
+        <span id="current">1</span> / <span id="total">13</span>
+    </div>
+
+    <div class="nav">
+        <button onclick="prevSlide()">←</button>
+        <button onclick="nextSlide()">→</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 13;
+
+        function showSlide(n) {
+            if (n < 1) n = totalSlides;
+            if (n > totalSlides) n = 1;
+
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+
+            document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+            document.getElementById('current').textContent = n;
+            currentSlide = n;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // 键盘导航
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // 触摸滑动支持
+        let touchStartX = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
+        });
+    </script>
+</body>
+</html>

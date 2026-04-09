@@ -5,7 +5,6 @@ team: rd
 role: 研发团队技术负责人
 status: active
 type: ai_agent
-
 name: AI - 研发团队技术负责人
 email: N/A
 
@@ -32,6 +31,7 @@ experience:
 
 availability: available
 召唤关键词: [研发, 技术, 架构, 开发, leader, 技术负责人]
+---
 
 # 研发团队技术负责人
 
@@ -100,3 +100,4 @@ availability: available
 - AI系统设计
 - 代码质量问题
 - 技术难题攻关
+
