@@ -25,3 +25,8 @@
 
 ## 知识库同步
 
+- 状态：已同步到 GitHub
+- 仓库：https://github.com/lysanderl-glitch/obsidian-knowledge
+
+---
+*此文件由定时任务自动生成*
