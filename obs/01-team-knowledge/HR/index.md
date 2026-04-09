@@ -50,6 +50,17 @@ created: 2026-04-09
 │visual_designer│               │              ↑
 │publishing_ops │               └──────────────┘
 └───────────────┘                         知识层
+         ↑
+┌───────────────┐
+│ Stock项目团队  │  ★独立项目团队
+│ (5 AI Agents) │
+├───────────────┤
+│project_manager│
+│trader        │
+│quant_research│
+│frontend_dev  │
+│backend_dev   │
+└───────────────┘
 ```
 
 ---
@@ -62,12 +73,14 @@ HR/
 │   ├── lysander/       # CEO (人类)
 │   ├── butler/         # Butler团队 (7 AI Agents)
 │   ├── rd/            # 研发团队 (5 AI Agents)
-│   ├── graphify/       # Graphify智囊团 (4 AI Agents) ★新增
+│   ├── graphify/       # Graphify智囊团 (4 AI Agents)
+│   ├── stock/          # 股票交易系统项目 (5 AI Agents) ★新增
 │   ├── obs/            # OBS知识管理团队 (4 AI Agents)
 │   └── content_ops/    # 内容运营团队 (4 AI Agents)
 └── positions/          # 岗位定义库
     ├── lysander/
-    └── rd/
+    ├── rd/
+    └── graphify/
 ```
 
 ## 团队概览
@@ -76,6 +89,7 @@ HR/
 |------|--------|------|----------|
 | lysander | 1 | CEO管理 | 用户 |
 | **graphify** | **4** | **智慧层/第二大脑** | **Lysander + 用户** |
+| **stock** | **5** | **独立项目** | **股票交易系统** |
 | butler | 7 | 执行层 | 业务交付 |
 | rd | 5 | 执行层 | 技术研发 |
 | obs | 4 | 知识层 | 知识管理 |
@@ -83,7 +97,7 @@ HR/
 
 ---
 
-## Graphify智囊团（★核心新增）
+## Graphify智囊团
 
 Graphify是你的**第二大脑核心引擎**，直接服务于Lysander和你。
 
@@ -143,6 +157,9 @@ Graphify ← OBS知识库
 | 关联、图谱 | graphify | relation_discovery |
 | 趋势、预测 | graphify | trend_watcher |
 | 决策、建议 | graphify | decision_advisor |
+| 股票、炒股 | stock | - |
+| 交易、持仓、止损 | stock | trader |
+| 量化、指标 | stock | quant_researcher |
 | 交付、项目、IoT | butler | - |
 | 知识库、OBS | obs | - |
 | 内容、博客、微信 | content_ops | - |
@@ -161,6 +178,7 @@ Lysander接收 → 分析 → 路由到对应团队
 │ 执行层：Butler / RD / Content_ops    │
 │ 智慧层：Graphify（深度分析洞察）      │
 │ 知识层：OBS（知识存储检索）           │
+│ 项目层：Stock（独立项目团队）         │
 └─────────────────────────────────────┘
     ↓
 结果汇报 → Lysander汇总 → 用户
@@ -168,6 +186,39 @@ Lysander接收 → 分析 → 路由到对应团队
 
 ---
 
+## Stock股票交易系统项目
+
+Stock是**独立项目团队**，专注股票交易系统开发，不并入RD团队。
+
+### 项目概述
+
+股票交易系统（趋势智选）- A股趋势交易指导系统，基于《炒股的智慧》策略。
+
+### 技术栈
+
+- 后端：FastAPI + SQLAlchemy + SQLite
+- 前端：Vue3 + Pinia + Element Plus
+- 数据：Baostock API
+
+### 系统URL
+
+- 系统：http://stock.lysander.bond/
+- 后端API：http://localhost:8000/docs
+
+### 核心功能
+
+| 模块 | 功能 |
+|-----|------|
+| 回测 | 历史信号回测分析 |
+| 模拟交易 | 100万资金模拟实盘 |
+| 仓位策略 | 《炒股的智慧》分阶段建仓 |
+| 知识库 | 书籍核心知识录入 |
+| 自动化 | 每日自动选股 |
+| 止损监控 | 动态止损管理 |
+| 趋势过滤 | MA20/MA60趋势判断 |
+
+---
+
 ## 更新日志
 
-- 2026-04-09: 新增Graphify智囊团，全员AI团队完成
+- 2026-04-09: 新增Stock股票交易系统项目团队
