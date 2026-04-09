@@ -4,10 +4,10 @@ specialist_id: delivery_expert
 team: butler
 role: 全球交付项目管理专家
 status: active
-type: human_expert
+type: ai_agent
 
-name: TBD
-email: TBD
+name: AI - 全球交付项目管理专家
+email: N/A
 
 domains:
   - 项目交付管理
@@ -21,8 +21,8 @@ capabilities:
   - 风险预警与管理
 
 experience:
-  - 多个大型项目交付经验
-  - 国际项目协调能力
+  - 多个大型项目交付管理经验
+  - 跨团队协调经验
 
 availability: available
 召唤关键词: [交付, 项目交付, 全球项目, 跨国项目]

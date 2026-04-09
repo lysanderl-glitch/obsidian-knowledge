@@ -4,10 +4,10 @@ specialist_id: iot_data_expert
 team: butler
 role: IoT数据处理专家
 status: active
-type: human_expert
+type: ai_agent
 
-name: TBD
-email: TBD
+name: AI - IoT数据处理专家
+email: N/A
 
 domains:
   - IoT数据处理

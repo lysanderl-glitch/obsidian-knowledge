@@ -4,10 +4,10 @@ specialist_id: iot_expert
 team: butler
 role: IoT施工规划专家
 status: active
-type: human_expert
+type: ai_agent
 
-name: TBD
-email: TBD
+name: AI - IoT施工规划专家
+email: N/A
 
 domains:
   - IoT系统施工
@@ -21,7 +21,7 @@ capabilities:
   - 施工进度管理
 
 experience:
-  - 多个IoT项目施工经验
+  - IoT项目施工规划经验
   - 传感器和网关部署经验
 
 availability: available

@@ -4,10 +4,10 @@ specialist_id: training_expert
 team: butler
 role: 培训体系设计专家
 status: active
-type: human_expert
+type: ai_agent
 
-name: TBD
-email: TBD
+name: AI - 培训体系设计专家
+email: N/A
 
 domains:
   - 培训体系设计
@@ -19,6 +19,10 @@ capabilities:
   - 课程设计与开发
   - 培训交付
   - 效果评估
+
+experience:
+  - 培训体系设计经验
+  - 课程开发经验
 
 availability: available
 召唤关键词: [培训, 培训体系, 课程开发, 知识传递]

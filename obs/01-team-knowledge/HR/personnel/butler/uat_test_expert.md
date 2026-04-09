@@ -4,10 +4,10 @@ specialist_id: uat_test_expert
 team: butler
 role: UAT测试专家
 status: active
-type: human_expert
+type: ai_agent
 
-name: TBD
-email: TBD
+name: AI - UAT测试专家
+email: N/A
 
 domains:
   - UAT测试
@@ -19,6 +19,10 @@ capabilities:
   - 测试用例设计
   - UAT执行管理
   - 测试报告编制
+
+experience:
+  - UAT测试管理经验
+  - 测试流程设计经验
 
 availability: available
 召唤关键词: [UAT, 用户验收测试, 测试, 验收]

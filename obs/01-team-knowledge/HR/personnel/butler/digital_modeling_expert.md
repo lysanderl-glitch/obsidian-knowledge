@@ -4,10 +4,10 @@ specialist_id: digital_modeling_expert
 team: butler
 role: 数字化建模专家
 status: active
-type: human_expert
+type: ai_agent
 
-name: TBD
-email: TBD
+name: AI - 数字化建模专家
+email: N/A
 
 domains:
   - 数字化建模
@@ -19,6 +19,10 @@ capabilities:
   - BIM模型创建和维护
   - 3D可视化
   - 数据集成
+
+experience:
+  - 建筑数字化建模经验
+  - BIM实施经验
 
 availability: available
 召唤关键词: [建模, BIM, 数字化, 3D模型, 可视化]

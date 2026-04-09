@@ -1,6 +1,6 @@
 ---
 title: 人力资源知识库
-description: 公司人员、岗位、能力管理体系
+description: 公司AI Agent团队、人员、岗位、能力管理体系
 type: HR-index
 version: "1.0"
 created: 2026-04-09
@@ -8,22 +8,26 @@ created: 2026-04-09
 
 # 人力资源知识库
 
-公司人员、岗位、能力管理的核心知识库。OBS作为单一数据源，为Lysander CEO提供团队召唤能力。
+公司AI Agent团队、人员、岗位、能力管理的核心知识库。OBS作为单一数据源，为Lysander CEO提供团队召唤能力。
+
+## 重要说明
+
+**全员AI团队**：所有团队成员均为AI Agent，由Lysander(人类CEO)统一管理。
+
+---
 
 ## 目录结构
 
 ```
 HR/
 ├── personnel/           # 人员档案库
-│   ├── lysander/       # CEO
-│   ├── butler/         # Butler团队
-│   ├── obs/            # OBS知识管理团队
-│   ├── content_ops/    # 内容运营团队
-│   └── rd/             # 研发团队
+│   ├── lysander/       # CEO (人类)
+│   ├── butler/         # Butler团队 (7 AI Agents)
+│   ├── obs/            # OBS知识管理团队 (4 AI Agents)
+│   ├── content_ops/    # 内容运营团队 (4 AI Agents)
+│   └── rd/             # 研发团队 (5 AI Agents)
 └── positions/          # 岗位定义库
     ├── lysander/
-    ├── butler/
-    ├── obs/
     └── rd/
 ```
 
@@ -31,44 +35,53 @@ HR/
 
 | 团队 | 负责人 | 成员数 | 状态 |
 |------|--------|--------|------|
-| lysander | - | 1 | active |
-| butler | TBD | 7 | partial |
-| obs | TBD | 4 | partial |
-| content_ops | TBD | 4 | partial |
-| rd | TBD | 5 | pending |
+| lysander | - | 1 | active (人类) |
+| butler | Lysander | 7 | active (AI) |
+| obs | Lysander | 4 | active (AI) |
+| content_ops | Lysander | 4 | active (AI) |
+| rd | Lysander | 5 | active (AI) |
 
-## 人员档案索引
+---
 
-### lysander 团队
-- [[lysander]] - 公司CEO/管理者
+## AI团队架构
 
-### butler 团队
-- [[butler/delivery_expert]] - 全球交付专家
-- [[butler/training_expert]] - 培训专家
-- [[butler/pmo_expert]] - PMO专家
-- [[butler/iot_expert]] - IoT施工专家
-- [[butler/digital_modeling_expert]] - 数字化建模专家
-- [[butler/iot_data_expert]] - IoT数据专家
-- [[butler/uat_test_expert]] - UAT测试专家
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      Lysander (CEO - 人类)                    │
+│  - 战略方向                                                  │
+│  - 资源协调                                                  │
+│  - 最终决策                                                  │
+│  - 对用户负责                                                │
+└─────────────────────────────────────────────────────────────┘
+                              ↑
+         ┌────────────────────┼────────────────────┐
+         │                    │                    │
+         ↓                    ↓                    ↓
+┌───────────────┐    ┌───────────────┐    ┌───────────────┐
+│ Butler团队    │    │ RD团队        │    │ OBS团队       │
+│ (7 AI Agents) │    │ (5 AI Agents) │    │ (4 AI Agents) │
+├───────────────┤    ├───────────────┤    ├───────────────┤
+│ delivery_expert│   │ tech_lead    │    │obs_architecture│
+│ training_expert│   │ backend_dev  │    │knowledge_chandu│
+│ pmo_expert    │    │ frontend_dev │    │knowledge_search│
+│ iot_expert    │    │ devops_eng   │    │knowledge_quality│
+│ digital_modeling│   │ qa_engineer  │    └───────────────┘
+│ iot_data_expert│   └───────────────┘
+│ uat_test_expert│           ↑
+└───────────────┘            │
+                              │
+              ┌───────────────┴───────────────┐
+              │        Content_ops团队         │
+              │        (4 AI Agents)           │
+              ├───────────────────────────────┤
+              │content_strategist              │
+              │content_creator                 │
+              │visual_designer                 │
+              │publishing_ops                  │
+              └───────────────────────────────┘
+```
 
-### obs 团队
-- [[obs/obs_architecture_expert]] - 知识架构专家
-- [[obs/knowledge_chandu_expert]] - 知识沉淀专家
-- [[obs/knowledge_search_expert]] - 知识检索专家
-- [[obs/knowledge_quality_expert]] - 知识质量专家
-
-### content_ops 团队
-- [[content_ops/content_strategist]] - 内容策划专家
-- [[content_ops/content_creator]] - 内容创作专家
-- [[content_ops/visual_designer]] - 视觉设计专家
-- [[content_ops/publishing_ops]] - 发布运营专家
-
-### rd 团队
-- [[rd/tech_lead]] - 技术负责人
-- [[rd/backend_dev]] - 后端开发工程师
-- [[rd/frontend_dev]] - 前端开发工程师
-- [[rd/devops_engineer]] - DevOps工程师
-- [[rd/qa_engineer]] - QA测试工程师
+---
 
 ## 召唤规则
 
@@ -84,6 +97,22 @@ HR/
 | 测试 | rd | qa_engineer |
 | 管理、战略 | lysander | lysander |
 
+---
+
+## 专家调用流程
+
+```
+用户需求
+    ↓
+Lysander接收 → 分析 → 路由到对应团队AI Agent
+    ↓
+AI Agent执行任务
+    ↓
+结果汇报 → Lysander汇总 → 用户
+```
+
+---
+
 ## 更新日志
 
-- 2026-04-09: 初始化HR知识库框架
+- 2026-04-09: 初始化全员AI团队HR知识库
