@@ -16,6 +16,44 @@ created: 2026-04-09
 
 ---
 
+## 团队架构
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      Lysander (CEO - 人类)                    │
+│                    你的AI分身 / 决策者                      │
+└─────────────────────────────────────────────────────────────┘
+                              ↑
+         ┌────────────────────┼────────────────────┐
+         │                    │                    │
+         ↓                    ↓                    ↓
+┌───────────────┐    ┌───────────────┐    ┌───────────────┐
+│ Butler团队    │    │ RD团队        │    │ Graphify智囊团 │
+│ (7 AI Agents) │    │ (5 AI Agents) │    │ (4 AI Agents) │
+├───────────────┤    ├───────────────┤    ├───────────────┤
+│ delivery_expert│   │ tech_lead    │    │ strategist    │
+│ training_expert│   │ backend_dev  │    │ relation_discov│
+│ pmo_expert    │    │ frontend_dev │    │ trend_watcher │
+│ iot_expert    │    │ devops_eng   │    │ decision_adviso│
+│ digital_modeling│   │ qa_engineer  │    └───────────────┘
+│ iot_data_expert│   └───────────────┘            ↑
+│ uat_test_expert│           ↑                  │ 深度分析
+└───────────────┘            │ 执行层         ┌───────────────┐
+         ↑                   └─────────────→  │ OBS知识团队  │
+         │                                       │ (4 AI Agents) │
+┌───────────────┐    ┌───────────────┐    ├───────────────┤
+│Content_ops团队│    │ 协同层        │    │obs_architecture│
+│ (4 AI Agents) │    │              │    │knowledge_chandu│
+├───────────────┤    └───────────────┘    │knowledge_search│
+│content_strateg│               ↑         │knowledge_quality│
+│content_creator│               │         └───────────────┘
+│visual_designer│               │              ↑
+│publishing_ops │               └──────────────┘
+└───────────────┘                         知识层
+```
+
+---
+
 ## 目录结构
 
 ```
@@ -23,9 +61,10 @@ HR/
 ├── personnel/           # 人员档案库
 │   ├── lysander/       # CEO (人类)
 │   ├── butler/         # Butler团队 (7 AI Agents)
+│   ├── rd/            # 研发团队 (5 AI Agents)
+│   ├── graphify/       # Graphify智囊团 (4 AI Agents) ★新增
 │   ├── obs/            # OBS知识管理团队 (4 AI Agents)
-│   ├── content_ops/    # 内容运营团队 (4 AI Agents)
-│   └── rd/             # 研发团队 (5 AI Agents)
+│   └── content_ops/    # 内容运营团队 (4 AI Agents)
 └── positions/          # 岗位定义库
     ├── lysander/
     └── rd/
@@ -33,52 +72,64 @@ HR/
 
 ## 团队概览
 
-| 团队 | 负责人 | 成员数 | 状态 |
-|------|--------|--------|------|
-| lysander | - | 1 | active (人类) |
-| butler | Lysander | 7 | active (AI) |
-| obs | Lysander | 4 | active (AI) |
-| content_ops | Lysander | 4 | active (AI) |
-| rd | Lysander | 5 | active (AI) |
+| 团队 | 成员数 | 定位 | 服务对象 |
+|------|--------|------|----------|
+| lysander | 1 | CEO管理 | 用户 |
+| **graphify** | **4** | **智慧层/第二大脑** | **Lysander + 用户** |
+| butler | 7 | 执行层 | 业务交付 |
+| rd | 5 | 执行层 | 技术研发 |
+| obs | 4 | 知识层 | 知识管理 |
+| content_ops | 4 | 执行层 | 内容运营 |
 
 ---
 
-## AI团队架构
+## Graphify智囊团（★核心新增）
+
+Graphify是你的**第二大脑核心引擎**，直接服务于Lysander和你。
+
+### 核心定位
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      Lysander (CEO - 人类)                    │
-│  - 战略方向                                                  │
-│  - 资源协调                                                  │
-│  - 最终决策                                                  │
-│  - 对用户负责                                                │
+│                    Graphify 智囊团                          │
+│                                                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
+│  │ 战略分析师  │  │ 关联发现专家 │  │ 趋势洞察师  │        │
+│  │strategist  │  │relation_disc│  │trend_watcher│        │
+│  └─────────────┘  └─────────────┘  └─────────────┘        │
+│                                                              │
+│  ┌─────────────┐                                            │
+│  │ 决策顾问    │                                            │
+│  │decision_adv │                                            │
+│  └─────────────┘                                            │
+│                                                              │
+│  核心能力：                                                 │
+│  ✦ 深度分析 - 从现象看本质                                  │
+│  ✦ 关联发现 - 找到隐性知识连接 (Graphify核心)               │
+│  ✦ 趋势洞察 - 发现模式预测未来                              │
+│  ✦ 决策支持 - 量化利弊给出建议                             │
 └─────────────────────────────────────────────────────────────┘
-                              ↑
-         ┌────────────────────┼────────────────────┐
-         │                    │                    │
-         ↓                    ↓                    ↓
-┌───────────────┐    ┌───────────────┐    ┌───────────────┐
-│ Butler团队    │    │ RD团队        │    │ OBS团队       │
-│ (7 AI Agents) │    │ (5 AI Agents) │    │ (4 AI Agents) │
-├───────────────┤    ├───────────────┤    ├───────────────┤
-│ delivery_expert│   │ tech_lead    │    │obs_architecture│
-│ training_expert│   │ backend_dev  │    │knowledge_chandu│
-│ pmo_expert    │    │ frontend_dev │    │knowledge_search│
-│ iot_expert    │    │ devops_eng   │    │knowledge_quality│
-│ digital_modeling│   │ qa_engineer  │    └───────────────┘
-│ iot_data_expert│   └───────────────┘
-│ uat_test_expert│           ↑
-└───────────────┘            │
-                              │
-              ┌───────────────┴───────────────┐
-              │        Content_ops团队         │
-              │        (4 AI Agents)           │
-              ├───────────────────────────────┤
-              │content_strategist              │
-              │content_creator                 │
-              │visual_designer                 │
-              │publishing_ops                  │
-              └───────────────────────────────┘
+```
+
+### 与Lysander的协同
+
+```
+你 → Graphify: "帮我分析这个项目有什么风险"
+         ↓
+Graphify → 战略分析 + 关联发现 + 趋势洞察
+         ↓
+你 ← Graphify: 完整分析报告 + 决策建议
+```
+
+### 与OBS的协同
+
+```
+Graphify ← OBS知识库
+    │ (读取历史知识)
+    │ (构建知识图谱)
+    │ (发现隐性关联)
+    ↓
+用户洞察 ← 分析结果
 ```
 
 ---
@@ -87,15 +138,15 @@ HR/
 
 | 任务关键词 | 路由团队 | 路由专家 |
 |-----------|----------|----------|
+| 分析、洞察 | graphify | - |
+| 战略、规划 | graphify | strategist |
+| 关联、图谱 | graphify | relation_discovery |
+| 趋势、预测 | graphify | trend_watcher |
+| 决策、建议 | graphify | decision_advisor |
 | 交付、项目、IoT | butler | - |
 | 知识库、OBS | obs | - |
 | 内容、博客、微信 | content_ops | - |
-| 研发、开发、架构 | rd | tech_lead |
-| 前端 | rd | frontend_dev |
-| 后端 | rd | backend_dev |
-| DevOps、部署 | rd | devops_engineer |
-| 测试 | rd | qa_engineer |
-| 管理、战略 | lysander | lysander |
+| 研发、开发、架构 | rd | - |
 
 ---
 
@@ -104,9 +155,13 @@ HR/
 ```
 用户需求
     ↓
-Lysander接收 → 分析 → 路由到对应团队AI Agent
+Lysander接收 → 分析 → 路由到对应团队
     ↓
-AI Agent执行任务
+┌─────────────────────────────────────┐
+│ 执行层：Butler / RD / Content_ops    │
+│ 智慧层：Graphify（深度分析洞察）      │
+│ 知识层：OBS（知识存储检索）           │
+└─────────────────────────────────────┘
     ↓
 结果汇报 → Lysander汇总 → 用户
 ```
@@ -115,4 +170,4 @@ AI Agent执行任务
 
 ## 更新日志
 
-- 2026-04-09: 初始化全员AI团队HR知识库
+- 2026-04-09: 新增Graphify智囊团，全员AI团队完成
