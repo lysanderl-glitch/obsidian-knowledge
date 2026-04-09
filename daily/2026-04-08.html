@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日记 - 2026-04-08</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.8;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .header {
+    text-align: center;
+    padding: 40px 0 30px;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 30px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 300;
+    color: #555;
+  }
+  .header .date {
+    font-size: 14px;
+    color: #999;
+    margin-top: 8px;
+  }
+  .entry {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .entry .time {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .entry .time::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #4CAF50;
+    border-radius: 50%;
+  }
+  .entry .text {
+    font-size: 16px;
+    margin-bottom: 12px;
+    white-space: pre-wrap;
+  }
+  .entry .images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .entry .images img {
+    max-width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .entry .images.single img {
+    max-width: 100%;
+  }
+  .entry .images.multi img {
+    max-width: calc(50% - 5px);
+  }
+  .entry.voice .time::before {
+    background: #2196F3;
+  }
+  .entry.image-only .time::before {
+    background: #FF9800;
+  }
+  .footer {
+    text-align: center;
+    padding: 30px 0;
+    color: #ccc;
+    font-size: 12px;
+  }
+  @media (max-width: 480px) {
+    .container { padding: 10px; }
+    .entry { padding: 15px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>2026-04-08 Daily Record</h1>
+    <div class="date">星期三 | 1 entries</div>
+  </div>
+    <div class="entry text">
+    <div class="time">07:49</div>
+    <div class="text">今天是很棒的一天，天气很好。今天有很多想法，多agent配合知识库很有效。又是很充实的一天！需要考虑demo环境的事情，明天早上列一下计划，把任务先发起来，不能停，不然回头就成了急活。
+收到图片但下载失败（CDN错误）
+再次收到图片但下载失败（CDN错误）</div>
+    <div class="images multi">
+      <img src="assets/2026-04-08/004.jpg" loading="lazy" />
+      <img src="assets/2026-04-08/005.jpg" loading="lazy" />
+      <img src="assets/2026-04-08/006.jpg" loading="lazy" />
+    </div>
+  </div>
+  <div class="footer">Daily Record by Claude Code</div>
+</div>
+</body>
+</html>
